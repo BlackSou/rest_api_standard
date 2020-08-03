@@ -51,4 +51,15 @@ class PlayRequest extends FormRequest
           ];
       }
     }
+
+    public function messages()
+    {
+        return [
+            'date.required' => 'Дата обязательна',
+            'date.date_format'  => 'Дата должна быть в формате: Y-m-d',
+            'date.unique'  => 'Эта дата уже занята',
+            'date.after_or_equal'  => 'Дата должна быть не раньше сегодняшнего дня',
+            'date.exists'  => 'Такой даты нет',
+        ];
+    }
 }
