@@ -14,7 +14,12 @@ class CreatePlaysTable extends Migration
     public function up()
     {
         Schema::create('plays', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('title');
+            $table->text('description');
+            $table->tinyInteger('complexity');
+            $table->boolean('isActive');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
