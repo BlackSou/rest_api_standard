@@ -62,4 +62,15 @@ class PlayRequest extends FormRequest
             'date.exists'  => 'Такой даты нет',
         ];
     }
+
+    public function all($keys = null)
+    {
+      $data = parent::all($keys);
+      switch ($this->getMethod())
+      {
+        case 'DELETE':
+          $data['date'] = $this->route('day');
+      }
+      return $data;
+    }
 }
