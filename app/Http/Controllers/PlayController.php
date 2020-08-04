@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Play;
-use Illuminate\Http\Request;
+use App\Http\Requests\PlayRequest;
 
 class PlayController extends Controller
 {
@@ -14,18 +14,13 @@ class PlayController extends Controller
      */
     public function index()
     {
-        //
+        return Play::all();
     }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,10 +28,11 @@ class PlayController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(PlayRequest $request)
+     {
+         $day = Play::create($request->validated());
+         return $day;
+     }
 
     /**
      * Display the specified resource.
@@ -46,7 +42,7 @@ class PlayController extends Controller
      */
     public function show(Play $play)
     {
-        //
+      return $play = Play::findOrFail($play);
     }
 
     /**
@@ -55,10 +51,6 @@ class PlayController extends Controller
      * @param  \App\Play  $play
      * @return \Illuminate\Http\Response
      */
-    public function edit(Play $play)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,10 +59,13 @@ class PlayController extends Controller
      * @param  \App\Play  $play
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Play $play)
-    {
-        //
-    }
+    public function update(PlayRequest $request, $id)
+     {
+         $play = Play::findOrFail($id);
+         $play->fill($request->except(['play_id']));
+         $play->save();
+         return response()->json($play);
+     }
 
     /**
      * Remove the specified resource from storage.
@@ -78,8 +73,9 @@ class PlayController extends Controller
      * @param  \App\Play  $play
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Play $play)
-    {
-        //
-    }
+    public function destroy(PlayRequest $request, $id)
+     {
+         $play = Play::findOrFail($id);
+         if($play->delete()) return response(null, 204);
+     }
 }
